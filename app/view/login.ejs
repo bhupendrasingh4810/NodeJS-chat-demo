@@ -1,0 +1,42 @@
+<!Doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Chatu</title>
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css'>
+    <link rel='stylesheet' href='css/styles.css'>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
+
+</head>
+
+<body class="purple lighten-3">
+    <div class="container">
+        <div class="row">
+            <div class="login-form purple lighten-5 col s10 col m6 offset-s1 offset-m3">
+                <h4 class="center">Login</h4>
+                <form method="post" action="/">
+                    <div class="input-field">
+                        <input id="email" type="text" name="email" class="validate">
+                        <label for="email">Email</label>
+                    </div>
+                    <div class="input-field">
+                        <input id="password" type="password" name="password" class="validate">
+                        <label for="password">Password</label>
+                        <p>
+                            <label>
+                              <input type="checkbox" />
+                              <span>Remember me</span>
+                            </label>
+                            <a href="/forgot-password"><small>Forgot password?</small></a>
+                        </p>
+                    </div>
+                    <button class="col s2 offset-s5 deep-purple lighten-1 waves-effect waves-light btn btn-small">Login</button>
+                    <p class="ct-login">New to the chatu? <a href="/signup"><b> Sign Up</b></a></p>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
