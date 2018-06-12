@@ -1,0 +1,33 @@
+.login-form {
+    margin-top: 15%;
+    border-radius: 10px;
+    box-shadow: 5px 5px 20px #7e57c2;
+}
+
+.login-form p a {
+    float: right;
+}
+
+.ct-login {
+    float: left;
+    margin-left: 30% !important;
+    text-align: center;
+}
+
+.signup-form {
+    margin-top: 1%;
+    border-radius: 10px;
+    box-shadow: 5px 5px 20px #7e57c2;
+}
+
+form {
+    padding: 20px;
+}
+
+button {
+    margin: 20px;
+}
+
+body {
+    background-image: url('../image/bg3.jpg')
+}
