@@ -32,12 +32,30 @@ var UserSchema = new Schema({
         type: String,
         required: false
     },
-    admin_password: {
+    password: {
         type: String,
         required: true
     },
     status: {
         type: Boolean
+    },
+    isActive: {
+        type: Boolean,
+        default: true,
+        required: true
+    },
+    isVerified: {
+        type: Boolean,
+        default: false,
+        required: true
+    },
+    created_at: {
+        type: Date,
+        default: new Date()
+    },
+    updated_at: {
+        type: Date,
+        default: new Date()
     }
 });
 

@@ -26,6 +26,7 @@ exports.signup = function(req, res) {
             } else {
                 user.save((err) => {
                     if (err) {
+                        console.log(err)
                         return res.status(400).json({ 'status': 'failure', 'error': 'User couldn\'t be added!' });
                     } else {
                         res.status(200).json({ 'status': 'success', 'message': 'User successfully added!', 'data': user });
