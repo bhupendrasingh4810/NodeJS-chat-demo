@@ -1,20 +1,15 @@
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
-var UserSchema = new Schema({
+var WorkspaceSchema = new Schema({
 
-    role: {
-        type: String
-    },
-    first_name: {
+    workspace_name: {
         type: String,
-        trim: true,
         unique: false,
         required: true
     },
-    last_name: {
+    owner_name: {
         type: String,
-        trim: true,
         unique: false,
         required: true
     },
@@ -29,10 +24,16 @@ var UserSchema = new Schema({
         unique: true,
         required: true
     },
-    admin_address: {
-        type: String,
-        required: false
-    },
+    members: [
+        {
+            type: String
+        }
+    ],
+    channels: [
+        {
+            type: String
+        }
+    ],
     password: {
         type: String,
         required: true
@@ -60,4 +61,4 @@ var UserSchema = new Schema({
     }
 });
 
-mongoose.model('user', UserSchema);
+mongoose.model('workspace', WorkspaceSchema);

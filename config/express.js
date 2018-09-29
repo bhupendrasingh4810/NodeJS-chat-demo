@@ -2,7 +2,8 @@ var express = require('express'),
     morgan = require('morgan'),
     mongoose = require('./mongoose'),
     bodyParser = require('body-parser'),
-    compress = require('compression');
+    compress = require('compression'),
+    responseHandler = require('../app/middlewares/responseHandler');
 
 module.exports = function() {
     var app = express();
@@ -18,6 +19,7 @@ module.exports = function() {
         extended: true
     }));
     app.use(bodyParser.json());
+    app.use(responseHandler)
 
     app.set('views', './app/view');
     app.set('view engine', 'ejs');
