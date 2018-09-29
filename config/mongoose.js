@@ -10,6 +10,7 @@ module.exports = function(req, res) {
 
     require('../app/model/user.model');
     require('../app/model/workspace.model')
+    require('../app/model/channel.model')
 
     return db;
 }

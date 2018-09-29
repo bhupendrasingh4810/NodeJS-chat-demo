@@ -1,6 +1,4 @@
-var mongoose = require('mongoose'),
-    User = require('mongoose').model('user'),
-    Workspace = require('mongoose').model('workspace');
+var Workspace = require('mongoose').model('workspace');
 
 exports.createWorkspace = (req, res) => {
     if (req.method == 'POST') {
