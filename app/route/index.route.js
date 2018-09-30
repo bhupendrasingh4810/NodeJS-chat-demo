@@ -14,4 +14,8 @@ module.exports = function(app) {
     app.get('/workspace/:id', workspace.getWorkspace)
 
     app.post('/channel', channel.createChannel)
+    app.put('/channel-status/:id', channel.activateOrDeactivateChannel)
+    app.get('/channel', channel.getAllChannel)
+    app.get('/channel/:id', channel.getChannel)
+    app.delete('/channel/:id', channel.deleteChannel)
 }

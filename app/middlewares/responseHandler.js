@@ -3,7 +3,7 @@ module.exports = (req, res, next) => {
       if (data ||
               (typeof data == 'number' && isFinite(data)) ||
               typeof data == 'string' || data instanceof String) {
-        data = [data]
+        data = data
       } else if (!Array.isArray(data)) {
         data = []
       }
