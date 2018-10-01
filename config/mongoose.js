@@ -1,12 +1,8 @@
 var config = require('./environment/development'),
     mongoose = require('mongoose');
 
-module.exports = function(req, res) {
-    var db = mongoose.connect('mongodb://localhost:27017/chat').then(() => {
-        res.status(200).json({ 'status': 'success', 'message': 'Database connected successfully!' });
-    }, (err) => {
-        if (err) {}
-    })
+module.exports = (req, res) => {
+    var db = mongoose.connect('mongodb://localhost:27017/chat', { useCreateIndex:true, useNewUrlParser: true })
 
     require('../app/model/user.model');
     require('../app/model/workspace.model')

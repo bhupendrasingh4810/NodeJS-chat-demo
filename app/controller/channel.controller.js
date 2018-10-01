@@ -5,14 +5,19 @@ exports.createChannel = (req, res) => {
     var channel = new Channel(req.body)
     Channel.find({ channel_name: req.body.channel_name }).then((response) => {
         if (response.length) {
-            res.status(200).json(res.responseHandler('Channel already exists!'))
+            res.status(200).json(res.responseHandler([], { 'error': 'Channel already exists!' }, 'success'))
         } else {
-            Workspace.update({ _id: req.body.workspace_id }, { $push: { channels: channel._id } }).then((data) => { })
-            channel.save((err) => {
-                if (err) {
-                    res.status(200).json(res.responseHandler('Channel couldn\'t be created'))
+            Workspace.updateOne({ _id: req.body.workspace_id }, { $push: { channels: channel._id } }).then((data, err) => {
+                if (err && err.n == 0) {
+                    res.status(200).json(res.responseHandler([], { 'error': 'Workspace not found' }, 'success'))
                 } else {
-                    res.status(200).json(res.responseHandler(channel, 'Channel created successfully!', 200))
+                    channel.save((err) => {
+                        if (err) {
+                            res.status(200).json(res.responseHandler([], { 'error': 'Channel couldn\'t be created' }, 'failure'))
+                        } else {
+                            res.status(200).json(res.responseHandler(channel, { 'success': 'Channel created successfully!' }, 'success'))
+                        }
+                    })
                 }
             })
         }
@@ -20,7 +25,7 @@ exports.createChannel = (req, res) => {
 }
 
 exports.getAllChannel = (req, res) => {
-    Channel.find({}).then((data) => {
+    Channel.find({ isActive: true }).then((data) => {
         if (!data.length) {
             res.status(200).json(res.responseHandler(data, 'No channel found.', 200))
         } else {
@@ -30,7 +35,7 @@ exports.getAllChannel = (req, res) => {
 }
 
 exports.getChannel = (req, res) => {
-    Channel.find({ _id: req.params.id }).then((data) => {
+    Channel.find({ _id: req.params.id, isActive: true }).then((data) => {
         if (!data.length) {
             res.status(200).json(res.responseHandler(data, 'No channel found.', 200))
         } else {
@@ -40,17 +45,20 @@ exports.getChannel = (req, res) => {
 }
 
 exports.activateOrDeactivateChannel = (req, res) => {
-    Channel.updateOne({_id: req.params.id}, {$set: {isActive: req.body.value}}).then((err, data) => {
-        if(err && err.n == 0) {
+    Channel.updateOne({ _id: req.params.id }, { $set: { isActive: req.body.value } }).then((err, data) => {
+        if (err && err.n == 0) {
             res.status(200).json(res.responseHandler(err, 'Can not perform this action.', 'failure'))
         } else res.status(200).json(res.responseHandler(data, 'Channel updated successfully.', 'success'))
     })
 }
 
 exports.deleteChannel = (req, res) => {
-    Channel.deleteOne({_id: req.params.id}).then((err,data) => {
-        if(err && err.n == 0) {
+    Channel.deleteOne({ _id: req.params.id }).then((err, data) => {
+        if (err && err.n == 0) {
             res.status(200).json(res.responseHandler(err, 'Channel does not exists.', 'success'))
-        } else res.status(200).json(res.responseHandler(data, 'Channel deleted successfully.', 'success'))
+        } else {
+            Workspace.update({ _id: req.body.workspace_id }, { $pull: { channels: req.params.id } }).then((err) => { })
+            res.status(200).json(res.responseHandler(data, 'Channel deleted successfully.', 'success'))
+        }
     })
 }
