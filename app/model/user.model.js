@@ -27,19 +27,23 @@ var UserSchema = new Schema({
     mobile_no: {
         type: String,
         unique: true,
-        required: true
-    },
-    admin_address: {
-        type: String,
         required: false
     },
     password: {
         type: String,
         required: true
     },
-    status: {
-        type: Boolean
-    },
+    workspace_id: [
+        {
+            type: Schema.Types.ObjectId,
+            required: true
+        }
+    ],
+    channels: [
+        {
+            type: Schema.Types.ObjectId
+        }
+    ],
     isActive: {
         type: Boolean,
         default: false,

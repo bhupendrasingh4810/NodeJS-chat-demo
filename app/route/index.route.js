@@ -2,6 +2,8 @@ module.exports = function (app) {
     var index = require('../controller/index.controller')
     var workspace = require('../controller/workspace.controller')
     var channel = require('../controller/channel.controller')
+    var user = require('../controller/user.controller')
+
     app.get('/', index.login)
     app.get('/signup', index.signup)
     app.get('/forgot-password', index.forgotPassword)
@@ -20,4 +22,6 @@ module.exports = function (app) {
     app.get('/channel', channel.getAllChannel)
     app.get('/channel/:id', channel.getChannel)
     app.delete('/channel/:id', channel.deleteChannel)
+
+    app.post('/user', user.createUser)
 }

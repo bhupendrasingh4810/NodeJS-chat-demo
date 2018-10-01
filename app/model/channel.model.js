@@ -9,7 +9,7 @@ var ChannelSchema = new Schema({
         required: true
     },
     workspace_id: {
-        type: String
+        type: Schema.Types.ObjectId
     },
     users: [],
     status: {
