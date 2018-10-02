@@ -24,4 +24,5 @@ module.exports = function (app) {
     app.delete('/channel/:id', channel.deleteChannel)
 
     app.post('/user', user.createUser)
+    app.put('/user/:id', user.userSignUp)
 }

@@ -2,21 +2,16 @@ var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
 var UserSchema = new Schema({
-
-    role: {
-        type: String
-    },
+    
     first_name: {
         type: String,
         trim: true,
-        unique: false,
-        required: true
+        unique: false
     },
     last_name: {
         type: String,
         trim: true,
-        unique: false,
-        required: true
+        unique: false
     },
     email: {
         type: String,
@@ -30,13 +25,11 @@ var UserSchema = new Schema({
         required: false
     },
     password: {
-        type: String,
-        required: true
+        type: String
     },
     workspace_id: [
         {
-            type: Schema.Types.ObjectId,
-            required: true
+            type: Schema.Types.ObjectId
         }
     ],
     channels: [

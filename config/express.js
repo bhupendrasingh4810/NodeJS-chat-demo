@@ -3,9 +3,12 @@ var express = require('express'),
     mongoose = require('./mongoose'),
     bodyParser = require('body-parser'),
     compress = require('compression'),
-    responseHandler = require('../app/middlewares/responseHandler');
+    jwt = require('jsonwebtoken'),
+    config = require('./environment/development'),
+    responseHandler = require('../app/middlewares/responseHandler'),
+    verifyToken = require('../app/middlewares/verifyToken');
 
-module.exports = function() {
+module.exports = function () {
     var app = express();
     var db = mongoose();
 
@@ -19,7 +22,8 @@ module.exports = function() {
         extended: true
     }));
     app.use(bodyParser.json());
-    app.use(responseHandler)
+    app.use(responseHandler);
+    app.use(verifyToken);
 
     app.set('views', './app/view');
     app.set('view engine', 'ejs');
