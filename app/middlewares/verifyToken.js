@@ -1,6 +1,9 @@
+var jwt = require('jsonwebtoken'),
+    config = require('../../config/environment/development');
+
 module.exports = (req, res, next) => {
     var token = req.body.token || req.query.token || req.headers['x-access-token'];
-    if (token) {
+    if (token == config.token) {
         // verifies secret and checks exp
         jwt.verify(token, config.secret, function (err, decoded) {
             if (err) {

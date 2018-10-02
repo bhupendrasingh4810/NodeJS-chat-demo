@@ -10,6 +10,7 @@ module.exports = function (app) {
     app.post('/', index.login)
     app.post('/signup', index.signup)
     app.post('/forgot-password', index.forgotPassword)
+    app.post('/token', index.generateToken)
 
     app.post('/workspace', workspace.createWorkspace)
     app.put('/workspace-status/:id', workspace.activateOrDeactivateWorkspace)
