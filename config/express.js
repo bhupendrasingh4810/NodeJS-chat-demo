@@ -1,12 +1,9 @@
 var express = require('express'),
     cors = require('cors'),
-    morgan = require('morgan'),
     mongoose = require('./mongoose'),
     bodyParser = require('body-parser'),
     compress = require('compression'),
-    jwt = require('jsonwebtoken'),
     helmet = require('helmet'),
-    config = require('./environment/development'),
     responseHandler = require('../app/middlewares/responseHandler'),
     verifyToken = require('../app/middlewares/verifyToken');
 

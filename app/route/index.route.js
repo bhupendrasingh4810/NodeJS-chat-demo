@@ -4,13 +4,10 @@ module.exports = function (app) {
     var channel = require('../controller/channel.controller')
     var user = require('../controller/user.controller')
 
-    app.get('/', index.login)
-    app.get('/signup', index.signup)
-    app.get('/forgot-password', index.forgotPassword)
-    app.post('/', index.login)
-    app.post('/signup', index.signup)
+    app.post('/login', index.login)
     app.post('/forgot-password', index.forgotPassword)
     app.post('/token', index.generateToken)
+    app.post('/change-password', index.changePassword)
 
     app.post('/workspace', workspace.createWorkspace)
     app.put('/workspace-status/:id', workspace.activateOrDeactivateWorkspace)
@@ -26,4 +23,7 @@ module.exports = function (app) {
 
     app.post('/user', user.createUser)
     app.put('/user/:id', user.userSignUp)
+    app.put('/user-status/:id', user.activateOrDeactivateUser)
+    app.get('/user', user.getAllUser)
+    app.get('/user/:id', user.getUser)
 }

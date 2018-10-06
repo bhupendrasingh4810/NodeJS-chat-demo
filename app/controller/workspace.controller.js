@@ -1,4 +1,5 @@
 'use strict'
+
 var Workspace = require('mongoose').model('workspace'),
     Channel = require('mongoose').model('channel'),
     Constant = require('../constant/constant');
