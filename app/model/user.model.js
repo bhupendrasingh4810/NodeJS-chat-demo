@@ -1,3 +1,4 @@
+'use strict'
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
@@ -20,9 +21,7 @@ var UserSchema = new Schema({
         match: /.+\@.+\..+/
     },
     mobile_no: {
-        type: String,
-        unique: true,
-        required: false
+        type: String
     },
     password: {
         type: String

@@ -1,3 +1,4 @@
+'use strict'
 module.exports = (req, res, next) => {
     res.responseHandler = (data, message = '', status = 200) => {
       if (data ||

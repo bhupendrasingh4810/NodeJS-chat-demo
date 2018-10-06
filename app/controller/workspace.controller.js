@@ -1,3 +1,4 @@
+'use strict'
 var Workspace = require('mongoose').model('workspace'),
     Channel = require('mongoose').model('channel'),
     Constant = require('../constant/constant');
@@ -24,7 +25,7 @@ exports.createWorkspace = (req, res) => {
 // Function to get all the workspaces which are active
 
 exports.getAllWorkspace = (req, res) => {
-    var promise = Workspace.find({ isActive: true }).exec();
+    var promise = Workspace.find({ isActive: true }, ['workspace_name', 'owner_name', 'email', 'mobile_no', 'members', 'channels', 'status', 'isActive', 'isVerified', 'created_at', 'updated_at']).exec();
 
     promise.then((data) => {
         if (data.length) {

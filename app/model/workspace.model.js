@@ -1,5 +1,8 @@
+'use strict'
 var mongoose = require('mongoose'),
-    Schema = mongoose.Schema;
+    Schema = mongoose.Schema,
+    bcrypt = require('bcrypt'),
+    SALT_WORK_FACTOR = 10;
 
 var WorkspaceSchema = new Schema({
 
@@ -62,3 +65,18 @@ var WorkspaceSchema = new Schema({
 });
 
 mongoose.model('workspace', WorkspaceSchema);
+
+WorkspaceSchema.pre('save', function (next) {
+    var workspace = this;
+    if (!workspace.isModified('password')) return next();
+
+    bcrypt.genSalt(SALT_WORK_FACTOR, (err, salt) => {
+        if (err) return next(err);
+        bcrypt.hash(workspace.password, salt, (err, hash) => {
+            if (err) return next(err);
+
+            workspace.password = hash;
+            next();
+        });
+    });
+});

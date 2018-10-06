@@ -1,3 +1,4 @@
+'use strict'
 var User = require('mongoose').model('user'),
     jwt = require('jsonwebtoken'),
     config = require('../../config/environment/development');
