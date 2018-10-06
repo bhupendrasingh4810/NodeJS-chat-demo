@@ -22,7 +22,7 @@ module.exports = function (app) {
     app.delete('/channel/:id', channel.deleteChannel)
 
     app.post('/user', user.createUser)
-    app.put('/user/:id', user.userSignUp)
+    app.put('/user', user.userSignUp)
     app.put('/user-status/:id', user.activateOrDeactivateUser)
     app.get('/user', user.getAllUser)
     app.get('/user/:id', user.getUser)

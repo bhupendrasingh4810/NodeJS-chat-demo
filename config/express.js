@@ -4,6 +4,7 @@ var express = require('express'),
     bodyParser = require('body-parser'),
     compress = require('compression'),
     helmet = require('helmet'),
+    session = require('express-session'),
     responseHandler = require('../app/middlewares/responseHandler'),
     verifyToken = require('../app/middlewares/verifyToken');
 
@@ -24,6 +25,11 @@ module.exports = function () {
     app.use(bodyParser.json());
     app.use(responseHandler);
     app.use(verifyToken);
+    app.use(session({
+        secret: 'bhupendrasingh',
+        resave: true,
+        saveUninitialized: false
+    }))
 
     app.set('views', './app/view');
     app.set('view engine', 'ejs');

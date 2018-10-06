@@ -28,7 +28,7 @@ exports.createUser = (req, res) => {
 // Function for user to sign up
 
 exports.userSignUp = (req, res) => {
-    var signUp = User.findOneAndUpdate({ _id: req.params.id }, { $set: { isActive: req.body.isActive, email: req.body.email } }, { new: true }).exec();
+    var signUp = User.findOneAndUpdate({ email: req.body.email }, { $set: { isActive: req.body.isActive, email: req.body.email } }, { new: true }).exec();
 
     signUp.then((user) => {
         res.status(200).json(res.responseHandler(user, 'Welcome!', 200));
