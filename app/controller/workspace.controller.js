@@ -10,7 +10,7 @@ exports.createWorkspace = (req, res) => {
     var workspace = new Workspace(req.body)
     var promise = Workspace.findOne({ email: req.body.email }).exec();
 
-    promise.then((err) => {
+    promise.then(() => {
         return workspace.save();
     }).then((user) => {
         res.status(200).json(res.responseHandler(user, Constant.constant.create_workspace, 'success'));
