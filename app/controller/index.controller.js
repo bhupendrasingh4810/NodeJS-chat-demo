@@ -1,6 +1,7 @@
 'use strict'
 
 var User = require('mongoose').model('user'),
+    Session = require('mongoose').model('session'),
     jwt = require('jsonwebtoken'),
     bcrypt = require('bcrypt'),
     config = require('../../config/environment/development'),
@@ -17,6 +18,13 @@ exports.login = (req, res, next) => {
             if (user) {
                 bcrypt.compare(req.body.password, user.password, (err, result) => {
                     if (result) {
+                        let sessionData = {
+                            'ip': req.connection.remoteAddress,
+                            'user_id': user._id,
+                            'token': req.headers['x-access-token']
+                        }
+                        var session = new Session(sessionData);
+                        session.save();
                         res.status(200).json(res.responseHandler(user, 'Login successfull', 'success'));
                     } else {
                         res.status(200).json(res.responseHandler([], 'Password was incorrect.', 'success'));
@@ -67,4 +75,16 @@ exports.changePassword = (req, res, next) => {
 exports.generateToken = (req, res) => {
     var token = jwt.sign(req.body, config.secret, { expiresIn: 604800 });
     res.json({ 'token': token });
+}
+
+exports.logout = (req, res) => {
+    if (req.headers['x-access-token'] && req.headers.session_id) {
+        var deleteSession = Session.findOneAndDelete({ session_id: req.headers.session_id }).exec();
+
+        deleteSession.then(() => {
+            res.status(200).json(res.responseHandler([], 'Logout successfull', 'success'));
+        }).catch((err) => {
+            res.status(200).json(res.responseHandler(err, 'Can not logout', 'failure'));
+        })
+    }
 }

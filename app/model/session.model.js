@@ -5,9 +5,11 @@ var mongoose = require('mongoose'),
     uuidv4 = require('uuid/v4');
 
 var SessionSchema = new Schema({
-    session: {
+    session_id: {
         type: String,
-        default: uuidv4()
+        default: function () {
+            return uuidv4()
+        }
     },
     ip: {
         type: String

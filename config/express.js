@@ -24,7 +24,7 @@ module.exports = function () {
     }));
     app.use(bodyParser.json());
     app.use(responseHandler);
-    app.use(verifyToken);
+    // app.use(verifyToken);
     app.use(session({
         secret: 'bhupendrasingh',
         resave: true,
