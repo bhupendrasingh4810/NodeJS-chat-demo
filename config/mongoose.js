@@ -7,6 +7,7 @@ module.exports = (req, res) => {
     require('../app/model/user.model');
     require('../app/model/workspace.model')
     require('../app/model/channel.model')
+    require('../app/model/session.model')
 
     return db;
 }
