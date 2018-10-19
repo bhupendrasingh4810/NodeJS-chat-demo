@@ -6,7 +6,7 @@ var Channel = require('mongoose').model('channel'),
 // Function to create a channel
 
 exports.createChannel = (req, res) => {
-    var channel = new Channel(req.body)
+    var channel = new Channel(req.body);
     var createChannel = Channel.find({ channel_name: req.body.channel_name }).exec();
 
     createChannel.then(() => {
@@ -20,7 +20,7 @@ exports.createChannel = (req, res) => {
     }).catch((err) => {
         if (err.code == 11000) {
             res.status(200).json(res.responseHandler([], { 'error': 'Channel already exists!' }, 'success'));
-        } else res.status(200).json(res.responseHandler([], { 'error': 'Channel couldn\'t be created' }, 'failure'));
+        } else res.status(200).json(res.responseHandler(err, { 'error': 'Channel couldn\'t be created' }, 'failure'));
     });
 }
 
@@ -75,3 +75,20 @@ exports.deleteChannel = (req, res) => {
         }
     });
 }
+
+// Function to update channel
+
+exports.updateChannel = (req, res) => {
+    var findChannel = Channel.find({ _id: req.params.id }).exec();
+
+    findChannel.then((data) => {
+        req.body.updated_at = new Date();
+        var updateChannel = Channel.updateMany({ _id: req.params.id }, req.body, { new: true }).exec();
+
+        updateChannel.then((data) => {
+            res.status(200).json(res.responseHandler(data, 'Channel updated successfully', 'success'));
+        })
+    }).catch((err) => {
+        res.status(200).json(res.responseHandler(err, 'Channel could not be updated', 'failure'));
+    })
+};

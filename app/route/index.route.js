@@ -19,6 +19,7 @@ module.exports = function (app) {
 
     app.post('/channel', channel.createChannel)
     app.put('/channel-status/:id', channel.activateOrDeactivateChannel)
+    app.put('/channel/:id', channel.updateChannel)
     app.get('/channel', channel.getAllChannel)
     app.get('/channel/:id', channel.getChannel)
     app.delete('/channel/:id', channel.deleteChannel)

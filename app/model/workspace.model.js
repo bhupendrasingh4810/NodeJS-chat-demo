@@ -36,12 +36,12 @@ var WorkspaceSchema = new Schema({
     },
     members: [
         {
-            type: Schema.Types.ObjectId
+            type: String
         }
     ],
     channels: [
         {
-            type: Schema.Types.ObjectId
+            type: String
         }
     ],
     password: {

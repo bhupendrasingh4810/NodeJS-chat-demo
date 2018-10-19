@@ -8,9 +8,9 @@ var Workspace = require('mongoose').model('workspace'),
 
 exports.createWorkspace = (req, res) => {
     var workspace = new Workspace(req.body)
-    var promise = Workspace.findOne({ email: req.body.email }).exec();
+    var createWorkspace = Workspace.findOne({ email: req.body.email }).exec();
 
-    promise.then(() => {
+    createWorkspace.then(() => {
         return workspace.save();
     }).then((user) => {
         user = user.toObject();
@@ -28,9 +28,9 @@ exports.createWorkspace = (req, res) => {
 // Function to get all the workspaces which are active
 
 exports.getAllWorkspace = (req, res) => {
-    var promise = Workspace.find({ isActive: true }, ['workspace_name', 'owner_name', 'email', 'mobile_no', 'members', 'channels', 'status', 'isActive', 'isVerified', 'created_at', 'updated_at']).exec();
+    var getAllWorkspace = Workspace.find({ isActive: true }, ['workspace_name', 'owner_name', 'email', 'mobile_no', 'members', 'channels', 'status', 'isActive', 'isVerified', 'created_at', 'updated_at']).exec();
 
-    promise.then((data) => {
+    getAllWorkspace.then((data) => {
         if (data.length) {
             res.status(200).json(res.responseHandler(data, '', 'success'));
         } else {
@@ -44,9 +44,9 @@ exports.getAllWorkspace = (req, res) => {
 // Function to get workspace with ID and active
 
 exports.getWorkspace = (req, res) => {
-    var promise = Workspace.findOne({ _id: req.params.id, isActive: true }).exec();
+    var getWorkspace = Workspace.findOne({ _id: req.params.id, isActive: true }).exec();
 
-    promise.then((data) => {
+    getWorkspace.then((data) => {
         data = data.toObject();
         delete data.password;
         res.status(200).json(res.responseHandler(data, '', 200));
@@ -93,17 +93,19 @@ exports.deleteWorkspace = (req, res) => {
     });
 };
 
+// Function to update workspace
+
 exports.updateWorkspace = (req, res) => {
     var findWorkspace = Workspace.find({ _id: req.params.id }).exec();
 
     findWorkspace.then((data) => {
         req.body.updated_at = new Date();
-        var promise = Workspace.updateMany({ _id: req.params.id }, req.body, { new: true }).exec();
+        var updateWorkspace = Workspace.updateMany({ _id: req.params.id }, req.body, { new: true }).exec();
 
-        promise.then((data) => {
-            res.status(200).json(data);
+        updateWorkspace.then((data) => {
+            res.status(200).json(res.responseHandler(data, 'Workspace updated successfully', 'success'));
         })
     }).catch((err) => {
-        res.status(200).json(err);
+        res.status(200).json(res.responseHandler(err, 'Workspace could not be updated', 'failure'));
     })
 };

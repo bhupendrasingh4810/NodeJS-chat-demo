@@ -2,11 +2,18 @@
 
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema,
+    uuidv4 = require('uuid/v4'),
     bcrypt = require('bcrypt'),
     SALT_WORK_FACTOR = 10;
 
 var UserSchema = new Schema({
-    
+
+    _id: {
+        type: String,
+        default: function () {
+            return uuidv4()
+        }
+    },
     first_name: {
         type: String,
         trim: true,

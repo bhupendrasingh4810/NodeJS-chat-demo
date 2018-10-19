@@ -1,16 +1,23 @@
 'use strict'
 var mongoose = require('mongoose'),
+    uuidv4 = require('uuid/v4'),
     Schema = mongoose.Schema;
 
 var ChannelSchema = new Schema({
 
+    _id: {
+        type: String,
+        default: function () {
+            return uuidv4()
+        }
+    },
     channel_name: {
         type: String,
         unique: true,
         required: true
     },
     workspace_id: {
-        type: Schema.Types.ObjectId
+        type: String
     },
     users: [],
     status: {
