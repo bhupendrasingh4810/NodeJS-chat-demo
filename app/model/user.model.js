@@ -40,12 +40,12 @@ var UserSchema = new Schema({
     },
     workspace_id: [
         {
-            type: Schema.Types.ObjectId
+            type: String
         }
     ],
     channels: [
         {
-            type: Schema.Types.ObjectId
+            type: String
         }
     ],
     isActive: {

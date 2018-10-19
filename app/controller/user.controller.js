@@ -31,6 +31,8 @@ exports.userSignUp = (req, res) => {
     var signUp = User.findOneAndUpdate({ email: req.body.email }, { $set: { isActive: req.body.isActive, email: req.body.email } }, { new: true }).exec();
 
     signUp.then((user) => {
+        user = user.toObject();
+        delete user.password;
         res.status(200).json(res.responseHandler(user, 'Welcome!', 200));
     }).catch((err) => {
         res.status(200).json(res.responseHandler(err, '', 200));
@@ -79,6 +81,6 @@ exports.activateOrDeactivateUser = (req, res) => {
 //     var findUser = User.findOneAndDelete({ _id: req.params.id }).exec();
 
 //     findUser.then((user) => {
-//         Workspace.
+        
 //     })
 // }
