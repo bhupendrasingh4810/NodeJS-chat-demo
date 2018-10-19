@@ -12,6 +12,7 @@ module.exports = function (app) {
 
     app.post('/workspace', workspace.createWorkspace)
     app.put('/workspace-status/:id', workspace.activateOrDeactivateWorkspace)
+    app.put('/workspace/:id', workspace.updateWorkspace)
     app.get('/workspace', workspace.getAllWorkspace)
     app.get('/workspace/:id', workspace.getWorkspace)
     app.delete('/workspace/:id', workspace.deleteWorkspace)

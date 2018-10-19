@@ -1,11 +1,18 @@
 'use strict'
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema,
+    uuidv4 = require('uuid/v4'),
     bcrypt = require('bcrypt'),
     SALT_WORK_FACTOR = 10;
 
 var WorkspaceSchema = new Schema({
 
+    _id: {
+        type: String,
+        default: function () {
+            return uuidv4()
+        }
+    },
     workspace_name: {
         type: String,
         unique: false,

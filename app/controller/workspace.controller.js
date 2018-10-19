@@ -13,15 +13,17 @@ exports.createWorkspace = (req, res) => {
     promise.then(() => {
         return workspace.save();
     }).then((user) => {
+        user = user.toObject();
+        delete user.password;
         res.status(200).json(res.responseHandler(user, Constant.constant.create_workspace, 'success'));
     }).catch((err) => {
         if (err.code == 11000) {
-            res.status(200).json(res.responseHandler([], { 'error': Constant.constant.workspace_exists }, 'failure'));
+            res.status(200).json(res.responseHandler([], { 'error': Constant.constant.workspace_exists }, 'success'));
         } else {
-            res.status(200).json(res.responseHandler([], { 'error': Constant.constant.workspace_exists }, 'failure'));
+            res.status(200).json(res.responseHandler([], { 'error': 'Something is missing' }, 'failure'));
         }
     });
-}
+};
 
 // Function to get all the workspaces which are active
 
@@ -37,7 +39,7 @@ exports.getAllWorkspace = (req, res) => {
     }).catch((err) => {
         res.status(200).json(res.responseHandler(err, { 'error': Constant.constant.workspace_not_exists }, 'failure'));
     });
-}
+};
 
 // Function to get workspace with ID and active
 
@@ -45,11 +47,13 @@ exports.getWorkspace = (req, res) => {
     var promise = Workspace.findOne({ _id: req.params.id, isActive: true }).exec();
 
     promise.then((data) => {
+        data = data.toObject();
+        delete data.password;
         res.status(200).json(res.responseHandler(data, '', 200));
     }).catch((err) => {
         res.status(200).json(res.responseHandler('No such workspace exists!'));
-    })
-}
+    });
+};
 
 
 // Function to activate or deactivate any workspace
@@ -58,18 +62,20 @@ exports.activateOrDeactivateWorkspace = (req, res) => {
     var promise = Workspace.findOneAndUpdate({ _id: req.params.id }, { $set: { isActive: req.body.isActive } }, { new: true }).exec();
 
     promise.then((data) => {
+        data = data.toObject();
+        delete data.password;
         res.status(200).json(res.responseHandler(data, 'Workspace updated successfully.', 'success'));
     }).catch((err) => {
         if (err && err.n == 0) {
             res.status(200).json(res.responseHandler(err, 'Can not perform this action.', 'failure'));
         }
     });
-}
+};
 
 // Function to delete workspace
 
 exports.deleteWorkspace = (req, res) => {
-    let channels
+    let channels;
     var findWorkspace = Workspace.find({ _id: req.params.id }).exec();
 
     findWorkspace.then((data) => {
@@ -85,4 +91,19 @@ exports.deleteWorkspace = (req, res) => {
     }).catch((err) => {
         res.status(200).json(res.responseHandler(err, 'Workspace does not exists.'));
     });
-}
+};
+
+exports.updateWorkspace = (req, res) => {
+    var findWorkspace = Workspace.find({ _id: req.params.id }).exec();
+
+    findWorkspace.then((data) => {
+        req.body.updated_at = new Date();
+        var promise = Workspace.updateMany({ _id: req.params.id }, req.body, { new: true }).exec();
+
+        promise.then((data) => {
+            res.status(200).json(data);
+        })
+    }).catch((err) => {
+        res.status(200).json(err);
+    })
+};
