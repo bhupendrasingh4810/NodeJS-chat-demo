@@ -29,4 +29,5 @@ module.exports = function (app) {
     app.put('/user-status/:id', user.activateOrDeactivateUser)
     app.get('/user', user.getAllUser)
     app.get('/user/:id', user.getUser)
+    app.delete('/user/:id', user.deleteUser)
 }

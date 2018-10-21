@@ -1,7 +1,8 @@
 'use strict'
 
 var User = require('mongoose').model('user'),
-    Workspace = require('mongoose').model('workspace');
+    Workspace = require('mongoose').model('workspace'),
+    Channel = require('mongoose').model('channel');
 
 // Function to create user by workspace owner
 
@@ -77,10 +78,16 @@ exports.activateOrDeactivateUser = (req, res) => {
 
 // Function to delete any user
 
-// exports.deleteUser = (req, res) => {
-//     var findUser = User.findOneAndDelete({ _id: req.params.id }).exec();
+exports.deleteUser = (req, res) => {
+    var findUser = User.findOneAndDelete({ _id: req.params.id }).exec();
 
-//     findUser.then((user) => {
-        
-//     })
-// }
+    findUser.then((user) => {
+        return user;
+    }).then((user) => {
+        return Workspace.updateOne({ _id: req.body.workspace_id }, { $pull: { members: req.params.id } }).exec();
+    }).then((user) => {
+        res.json(res.responseHandler('User deleted successfully', 'success'));
+    }).catch((err) => {
+        res.json(res.responseHandler(err, 'User deleted successfully', 'success'));
+    })
+}
