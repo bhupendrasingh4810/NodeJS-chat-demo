@@ -11,29 +11,28 @@ exports.login = (req, res, next) => {
     if (!req.body.email || !req.body.password) {
         res.status(200).json(res.responseHandler([], { 'error': 'Email and password required' }, 'failure'));
     } else {
-        var query = {
-            email: req.body.email
-        };
-        User.findOne(query, (err, user) => {
-            if (user) {
-                bcrypt.compare(req.body.password, user.password, (err, result) => {
-                    if (result) {
-                        let sessionData = {
-                            'ip': req.connection.remoteAddress,
-                            'user_id': user._id,
-                            'token': req.headers['x-access-token']
-                        }
-                        var session = new Session(sessionData);
-                        session.save();
-                        res.status(200).json(res.responseHandler(user, 'Login successfull', 'success'));
-                    } else {
-                        res.status(200).json(res.responseHandler([], 'Password was incorrect.', 'success'));
+        var findUser = User.findOne({ email: req.body.email }).exec();
+
+        findUser.then((user) => {
+            return user;
+        }).then((user) => {
+            bcrypt.compare(req.body.password, user.password, (err, result) => {
+                if (result) {
+                    let sessionData = {
+                        'ip': req.connection.remoteAddress,
+                        'user_id': user._id,
+                        'token': req.headers['x-access-token']
                     }
-                });
-            } else {
-                res.status(200).json(res.responseHandler([], 'User not found', 'failure'));
-            }
-        });
+                    var session = new Session(sessionData);
+                    session.save();
+                    res.status(200).json(res.responseHandler({ "user": user, "session": session }, 'Login successfull', 'success'));
+                } else {
+                    res.status(200).json(res.responseHandler([], 'Password was incorrect', 'success'));
+                }
+            });
+        }).catch((err) => {
+            res.status(200).json(res.responseHandler(err, 'User not found', 'success'));
+        })
     }
 }
 

@@ -58,6 +58,10 @@ var UserSchema = new Schema({
         default: true,
         required: true
     },
+    online: {
+        type: Boolean,
+        default: false
+    },
     created_at: {
         type: Date,
         default: new Date()
