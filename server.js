@@ -1,12 +1,16 @@
-var express = require('./config/express');
-// mongoose = require('./config/mongoose');
+const express = require('./config/express');
+const app = express();
 
-var app = express();
-// var db = mongoose();
+const start = async () => {
+    try {
+        await app.listen(3000);
+        console.log('Server running at http://localhost:3000/');
 
-app.listen(3000, (err) => {
-    if (err) throw err;
-    console.log('Server running at http://localhost:3000/');
-});
+    } catch (err) {
+        console.error(err);
+        process.exit(); // Process object is a global variable that lets us manage the current Node.js process.
+    }
+}
 
+start();
 module.exports = app;
