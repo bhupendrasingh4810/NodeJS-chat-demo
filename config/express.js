@@ -1,16 +1,18 @@
-var express = require('express'),
-    cors = require('cors'),
-    mongoose = require('./mongoose'),
-    bodyParser = require('body-parser'),
-    compress = require('compression'),
-    helmet = require('helmet'),
-    session = require('express-session'),
-    responseHandler = require('../app/middlewares/responseHandler'),
-    verifyToken = require('../app/middlewares/verifyToken');
+const express = require('express');
+const cors = require('cors');
+const mongoose = require('./mongoose');
+const bodyParser = require('body-parser');
+const compress = require('compression');
+const helmet = require('helmet');
+const session = require('express-session');
+const throwError = require('http-errors');
+
+const responseHandler = require('../app/middlewares/responseHandler');
+const verifyToken = require('../app/middlewares/verifyToken');
 
 module.exports = function () {
-    var app = express();
-    var db = mongoose();
+    const app = express();
+    const db = mongoose();
 
     app.use(helmet());
     app.use(cors({
@@ -24,6 +26,7 @@ module.exports = function () {
     }));
     app.use(bodyParser.json());
     app.use(responseHandler);
+    // app.use(throwError);
     // app.use(verifyToken);
     app.use(session({
         secret: 'bhupendrasingh',

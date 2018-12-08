@@ -17,7 +17,13 @@ var UserSchema = new Schema({
     first_name: {
         type: String,
         trim: true,
-        unique: false
+        unique: false,
+        validate: [
+            (first_name) => {
+                return first_name.length > 0;
+            },
+            'First name is required.'
+        ]
     },
     last_name: {
         type: String,
@@ -36,7 +42,8 @@ var UserSchema = new Schema({
         unique: false
     },
     password: {
-        type: String
+        type: String,
+        required: true
     },
     workspace_id: [
         {
