@@ -1,21 +1,20 @@
 'use strict'
 
-var User = require('mongoose').model('user'),
-    Session = require('mongoose').model('session'),
-    jwt = require('jsonwebtoken'),
-    bcrypt = require('bcrypt'),
-    config = require('../../config/environment/development'),
-    SALT_WORK_FACTOR = 10;
+const User = require('mongoose').model('user');
+const Session = require('mongoose').model('session');
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
+const throwError = require('http-errors');
+const config = require('../../config/environment/development');
+const SALT_WORK_FACTOR = 10;
 
-exports.login = (req, res, next) => {
+exports.login = async (req, res, next) => {
     if (!req.body.email || !req.body.password) {
-        res.status(200).json(res.responseHandler([], { 'error': 'Email and password required' }, 'failure'));
-    } else {
-        var findUser = User.findOne({ email: req.body.email }).exec();
-
-        findUser.then((user) => {
-            return user;
-        }).then((user) => {
+        res.status(200).json(res.responseHandler([], { 'error': 'Email and password required' }, 400));
+    }
+    try {
+        let user = await User.findOne({ email: req.body.email });
+        if (user) {
             bcrypt.compare(req.body.password, user.password, (err, result) => {
                 if (result) {
                     let sessionData = {
@@ -23,16 +22,17 @@ exports.login = (req, res, next) => {
                         'user_id': user._id,
                         'token': req.headers['x-access-token']
                     }
-                    var session = new Session(sessionData);
+                    let session = new Session(sessionData);
                     session.save();
-                    res.status(200).json(res.responseHandler({ "user": user, "session": session }, 'Login successfull', 'success'));
-                } else {
-                    res.status(200).json(res.responseHandler([], 'Password was incorrect', 'success'));
-                }
+                    user = user.toObject();
+                    delete user.password;
+                    delete user.__v;
+                    res.status(200).json(res.responseHandler({ "user": user, "session": session }, 'Login successfull', 200));
+                } else next(throwError(err));
             });
-        }).catch((err) => {
-            res.status(200).json(res.responseHandler(err, 'User not found', 'success'));
-        })
+        }
+    } catch (err) {
+        return next(throwError(err));
     }
 }
 

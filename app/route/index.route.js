@@ -6,6 +6,10 @@ module.exports = function (app) {
     var http = require('http')
     var io = require('socket.io').listen(http.createServer(app))
 
+    app.get('/', function(req, res) {
+        res.render('login');
+     });
+
     app.post('/login', index.login)
     app.post('/forgot-password', index.forgotPassword)
     app.post('/token', index.generateToken)
@@ -37,7 +41,7 @@ module.exports = function (app) {
 
     io.on('connection', (socket) => {
         var addedUser = false;
-
+        console.log('hello');
         // when the client emits 'new message', this listens and executes
         socket.on('new message', (data) => {
             // we tell the client to execute 'new message'

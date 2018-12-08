@@ -7,6 +7,17 @@
     <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css'>
     <link rel='stylesheet' href='css/styles.css'>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+
+    <script>
+        var socket = io();
+        function typing(e) {
+            socket.emit('typing');
+            setTimeout(function () {
+                socket.emit('stoppedTyping');
+            }, 3000);
+        }
+    </script>
 
 </head>
 
@@ -17,7 +28,7 @@
                 <h4 class="center">Login</h4>
                 <form method="post" action="/">
                     <div class="input-field">
-                        <input id="email" type="text" name="email" class="validate">
+                        <input id="email" type="text" name="email" onkeydown="typing()" class="validate">
                         <label for="email">Email</label>
                     </div>
                     <div class="input-field">
@@ -25,8 +36,8 @@
                         <label for="password">Password</label>
                         <p>
                             <label>
-                              <input type="checkbox" />
-                              <span>Remember me</span>
+                                <input type="checkbox" />
+                                <span>Remember me</span>
                             </label>
                             <a href="/forgot-password"><small>Forgot password?</small></a>
                         </p>
